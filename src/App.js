@@ -46,7 +46,7 @@ function App() {
   // const _mode = useState('welcome');
   // const mode = _mode[0];     //상태 즉 'welcome'
   // const setMode = _mode[1];   //모드의값을바꿀수있음 (function이 들어있음)
-  const [mode , setMode] = useState('READ');
+  const [mode , setMode] = useState('WELCOME');
   const [id , setId] = useState(null);
 
   
