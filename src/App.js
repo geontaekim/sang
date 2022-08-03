@@ -148,6 +148,7 @@ function App() {
     }}></Create>
   } else if (mode === 'UPDATE') {
     let title, body = null;
+    let ssss=null;
     for (let i = 0; i < topics.length; i++) {
       if (topics[i].id === id) {
         title = topics[i].title;
