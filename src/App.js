@@ -10,14 +10,20 @@ function Article(props) {
     {props.body}
   </article>
 }
+function Article2(props) {
+  return <article>
+    <h2>{props.title}</h2>
+    {props.body}
+  </article>
+}
+
 function Header(props) {
   return <header>
     <h1> <a href="/" onClick={function (event) {
       event.preventDefault();  // 클릭해도 리로드가 이루어지지않게한다.
-      props.onChangeMode();
+      props.onChangeMode();   //setMode 들어있음 
     }}>{props.title}</a></h1>
   </header>
-
 }
 function Create(props) {
   return <article>
@@ -32,19 +38,19 @@ function Create(props) {
       <p><input type='text' name="title" placeholder='title' /></p>
       <p><textarea name='body' placeholder='body'></textarea></p>
       <p><input type='submit' value="create"></input></p>
-
     </form>
   </article>
 }
 
 function Nav(props) {
-  const lis = []
+  const lis = [];
   for (let i = 0; i < props.topics.length; i++) {
-    let t = props.topics[i];
-    lis.push(<li key={t.id}>
+    let t = props.topics[i];   //{id: 1, title: 'html', body: 'html is...'} 등등
+    console.log('t?',t);
+    lis.push(<li key={t.id}>   
       <a id={t.id} href={'/read/' + t.id} onClick={(event) => {
         event.preventDefault();
-        let id = Number(event.target.id);
+        let id = Number(event.target.id);   //문자열을 숫자로 뱐환 Number();
         props.onChangeMode(id); 
         // target = 이벤트를 유발시킨태그를 가르킴
       }}>{t.title}</a>
@@ -85,8 +91,9 @@ function Update(props) {
 
 }
 
-function App() {
 
+function App() {
+  const [count,setCount] = useState('0');
   const [mode, setMode] = useState('WELCOME');
   const [id, setId] = useState(null);
   const [nextId, setNextId] = useState(4);
@@ -95,8 +102,11 @@ function App() {
     { id: 2, title: 'css', body: 'css is...' },
     { id: 3, title: 'js', body: 'js is...' }
   ])
+
+  const [nextNum,setNextNum] =useState(4);
   let content = null;
   let contextControl = null;
+  let content2= null;
   console.log('mode?', mode)
   if (mode === 'WELCOME') {
     content = <Article title="welcome" body="hello, 웰컴이유~"></Article> 
@@ -127,12 +137,11 @@ function App() {
     }} /></li>
     </>  //복수의태그를 포함하는 태그 ->  '<>' 빈태그
   } else if (mode === 'CREATE') {
-    
     content = <Create onCreate={(_title, _body) => {
-      const newTopic = { id: nextId, title: _title, body: _body }
-      const copyTopics = [...topics]
-      copyTopics.push(newTopic);
-      setTopics(copyTopics);
+      const newTopic = { id: nextId, title: _title, body: _body }  //새로운 topic만들기
+      const copyTopics = [...topics]                               //topics카피본 만들기
+      copyTopics.push(newTopic);                                  //카피한 topics에push하기
+      setTopics(copyTopics);                                       //푸쉬완료한 카피topics 셋topics에 넣기
       setMode('READ');
       setNextId(nextId + 1);
       console.log('nextId?', nextId);
@@ -160,6 +169,7 @@ function App() {
 
     }}></Update>
   }
+  
   return (
     <div>
       <Header title="react" onChangeMode={() => {
@@ -178,11 +188,14 @@ function App() {
           event.preventDefault();
           setMode('CREATE');
         }}>create</a></li>
-        {contextControl}   
+        {contextControl}
       </ul>
-
+      <div>{count}</div>
+      <button onClick={event=>{
+        setCount(Number(count)+1);
+      }}>증가</button>
     </div>
   );
 }
-
+ 
 export default App;
